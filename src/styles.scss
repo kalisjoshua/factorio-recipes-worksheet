@@ -4,6 +4,50 @@
 
 body {
   font-family: sans-serif;
+  margin: 0 auto;
+  max-width: 80ex;
+  padding: 1ex;
+}
+
+h1 {
+  font-size: 3ex;
+}
+
+h2 {
+  font-size: 2ex;
+}
+
+input {
+  background: gainsboro;
+  border: 0;
+  outline: none;
+  padding: 5px;
+}
+
+ol, ul {
+  margin: 2ex;
+  margin-right: 0;
+  padding: 0;
+}
+
+table {
+  width: 100%;
+}
+
+td:first-of-type {
+  flex: 1 0;
+}
+
+tr + tr {
+  margin-top: 1px;
+}
+
+tr.Output {
+  background: yellowgreen;
+  border-radius: 6px;
+  display: block;
+  margin-left: -1ex;
+  padding-left: 1ex;
 }
 
 [button] {
@@ -36,32 +80,60 @@ body {
   padding: 3px 1px;
 }
 
-[field]:last-of-type { flex-grow: 0; }
-[field]:first-of-type { flex-grow: 1; }
-
 [field] > * {
   display: block;
   width: 100%;
 }
 
 [field] input {
-  border: 0;
+  background: white;
   border-bottom: 1px solid #AFAFAF;
   font-size: inherit;
-  outline: none;
-  padding: 5px;
 }
 
 [field] label {
   font-size: 80%;
 }
 
-[flex-container] {
+.button-row {
+  margin-top: 3ex;
+}
+
+.dot {
+  color: darkRed;
+  border-radius: 2ex;
+  cursor: pointer;
+  float: right;
+  padding: 1px 1ex;
+  position: relative;
+  text-align: center;
+  top: -1ex;
+  transition: 200ms;
+}
+
+.dot:hover {
+  background: red;
+  color: white;
+}
+
+.flex-container {
   display: flex;
 }
 
-[flex-container]:last-of-type {
-  margin-top: 3ex;
+.flex-container > * {
+  flex: 0 1 8ex;
+}
+
+.flex-container > *:first-of-type {
+  flex: 1 0;
+}
+
+.instance .flex-container > *:last-of-type {
+  flex-basis: 13ex;
+}
+
+.instance input {
+  width: 6ex;
 }
 
 .table.Input + .table.Input label,

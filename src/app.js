@@ -17,31 +17,15 @@ function App({render, state = startingState}) {
     render(state)
   }
 
-  function cancel() {
-    delete state.pending
+  function refine(indx, item) {
+    state.instances[indx] = item
     render(state)
   }
 
-  function create(pending) {
-    if (validate(pending)) {
-      state.instances.push(pending)
-      delete state.pending
-      render(state)
-    } else {
-      alert("error")
-    }
-  }
-
-  function update(type, pending) {
-    switch (type) {
-      case "pending":
-        state.pending = pending
-        break
-
-      default:
-        throw new Error("No update type indicated.")
-    }
-
+  function remove(indx) {
+    state.instances = state.instances
+      .slice(0, indx)
+      .concat(state.instances.slice(indx + 1))
     render(state)
   }
 
@@ -54,10 +38,25 @@ function App({render, state = startingState}) {
   const proc = (
     <Process
       {...{
-        cancel,
-        create,
+        cancel() {
+          delete state.pending
+          render(state)
+        },
+        create(pending) {
+          if (validate(pending)) {
+            pending.Instances = 1
+            state.instances.push(pending)
+            delete state.pending
+            render(state)
+          } else {
+            alert("error")
+          }
+        },
         data: state.pending,
-        update: a => update("pending", a)
+        update(pending) {
+          state.pending = pending
+          render(state)
+        },
       }}
     />
   )
@@ -74,7 +73,8 @@ function App({render, state = startingState}) {
       <small>Store settings for a multiple map settings is localStorage.</small>
       */}
 
-      {state.instances.map(instance)}
+      <ol>{state.instances.map((...args) =>
+        instance(v => refine(args[1], v), () => remove(args[1]), ...args))}</ol>
 
       {state.pending ? proc : addButton}
     </main>

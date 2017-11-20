@@ -1,7 +1,8 @@
 function Row({children, ...rest}) {
+  rest.class = `flex-container ${rest.class || ""}`
 
   return (
-    <div {...rest} flex-container>{children}</div>
+    <div {...rest}>{children}</div>
   )
 }
 

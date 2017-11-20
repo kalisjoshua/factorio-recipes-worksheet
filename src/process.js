@@ -30,34 +30,20 @@ function lineItem(update, {Input, Output, Sum}, indx, orig) {
 
 function Process({cancel, create, data, update}) {
   const {
+    Inputs = [],
     Machine = "",
+    Outputs = [],
     Recipe = "",
     Speed = 0,
     Time = 0,
   } = data
 
-  let {
-    Inputs = [],
-    Outputs = [],
-  } = data
+  function entryRow(type, list, addRow) {
 
-  function done() {
-    data.Inputs = data.Inputs
-      .filter(item => item.Input)
-    data.Outputs = data.Outputs
-      .filter(item => item.Output)
-    create(data)
-  }
-
-  function entryRow(text, list, addRow) {
-    const result = list
-      .filter(item => item[text])
-
-    if (addRow) {
-      result.push({ [text]: "", Sum: 1 })
-    }
-
-    return result
+    return [
+      ...list.filter(item => item[type]),
+      { [type]: "", Sum: 1, type: type }
+    ]
   }
 
   function propsUpdate(prop) {
@@ -66,9 +52,6 @@ function Process({cancel, create, data, update}) {
       update(data)
     }
   }
-
-  Inputs = entryRow("Input", Inputs, true)
-  Outputs = entryRow("Output", Outputs, true)
 
   return (
     <section>
@@ -86,12 +69,14 @@ function Process({cancel, create, data, update}) {
         <Entry isNumber name="Speed" onChange={propsUpdate("Speed")} value={Speed} />
       </Row>
 
-      {Outputs.map((...args) => lineItem(propsUpdate("Outputs"), ...args))}
+      {entryRow("Output", Outputs)
+        .map((...args) => lineItem(propsUpdate("Outputs"), ...args))}
 
-      {Inputs.map((...args) => lineItem(propsUpdate("Inputs"), ...args))}
+      {entryRow("Input", Inputs)
+        .map((...args) => lineItem(propsUpdate("Inputs"), ...args))}
 
-      <Row>
-        <Button onClick={done}>Done</Button>
+      <Row class="button-row">
+        <Button onClick={() => create(data)}>Done</Button>
         <Button onClick={cancel} warning>Cancel</Button>
       </Row>
     </section>
