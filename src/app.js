@@ -30,8 +30,8 @@ function App({render, state = startingState}) {
   }
 
   const addButton = (
-    <Row>
-      <Button onClick={add}>Add Process</Button>
+    <Row class="button-row">
+      <span><Button onClick={add}>Add Process</Button></span>
     </Row>
   )
 
@@ -73,8 +73,10 @@ function App({render, state = startingState}) {
       <small>Store settings for a multiple map settings is localStorage.</small>
       */}
 
-      <ol>{state.instances.map((...args) =>
-        instance(v => refine(args[1], v), () => remove(args[1]), ...args))}</ol>
+      <div class="processes">
+        {state.instances.map((...args) =>
+          instance(v => refine(args[1], v), () => remove(args[1]), ...args))}
+      </div>
 
       {state.pending ? proc : addButton}
     </main>
@@ -82,6 +84,7 @@ function App({render, state = startingState}) {
 }
 
 function validate(process) {
+  console.log(process)
   const recipe = process.Recipe && process.Time
   const machine = process.Machine && process.Speed
   const items = [process.Outputs, process.Inputs]
@@ -90,6 +93,7 @@ function validate(process) {
         .every(({Input, Output, Sum}) =>
           Sum && Input || Output))
 
+  console.log({recipe, machine, items})
   return recipe && machine && items
 }
 

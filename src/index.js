@@ -9,7 +9,7 @@ function render(state) {
 }
 
 if (typeof window !== "undefined") {
-  if (false) {
+  if (true) {
     render()
   } else {
     const dirtWater = {
@@ -45,7 +45,21 @@ if (typeof window !== "undefined") {
 
     render({
       instances: [
-        dirtWater,
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
+        JSON.parse(JSON.stringify(dirtWater)),
       ]
     })
   }

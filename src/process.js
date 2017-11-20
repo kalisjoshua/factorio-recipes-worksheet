@@ -3,9 +3,7 @@ import Entry from "./entry"
 import Field from "./field"
 import Row from "./row"
 
-function lineItem(update, {Input, Output, Sum}, indx, orig) {
-  const type = Input !== void 0 ? "Input" : "Output"
-
+function lineItem(update, {Input, Output, Sum, type}, indx, orig) {
   const count = {
     label: "Sum",
     name: `${type}Sum${indx}`,
@@ -38,11 +36,20 @@ function Process({cancel, create, data, update}) {
     Time = 0,
   } = data
 
+  function done() {
+    data.Inputs = Inputs
+      .filter(i => i[i.type])
+    data.Outputs = Outputs
+      .filter(i => i[i.type])
+
+    create(data)
+  }
+
   function entryRow(type, list, addRow) {
 
     return [
       ...list.filter(item => item[type]),
-      { [type]: "", Sum: 1, type: type }
+      {[type]: "", Sum: 1, type}
     ]
   }
 
@@ -76,8 +83,10 @@ function Process({cancel, create, data, update}) {
         .map((...args) => lineItem(propsUpdate("Inputs"), ...args))}
 
       <Row class="button-row">
-        <Button onClick={() => create(data)}>Done</Button>
-        <Button onClick={cancel} warning>Cancel</Button>
+        <span>
+          <Button onClick={done}>Done</Button>
+          <Button onClick={cancel} warning>Cancel</Button>
+        </span>
       </Row>
     </section>
   )

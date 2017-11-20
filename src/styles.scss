@@ -3,6 +3,7 @@
 }
 
 body {
+  counter-reset: processes;
   font-family: sans-serif;
   margin: 0 auto;
   max-width: 80ex;
@@ -26,8 +27,8 @@ input {
 
 ol, ul {
   margin: 2ex;
-  margin-right: 0;
-  padding: 0;
+  // margin-right: 0;
+  // padding: 0;
 }
 
 table {
@@ -38,16 +39,18 @@ td:first-of-type {
   flex: 1 0;
 }
 
+tr {
+  margin: 0 -2ex;
+  padding: 0 2ex;
+}
+
 tr + tr {
   margin-top: 1px;
 }
 
 tr.Output {
-  background: yellowgreen;
-  border-radius: 6px;
-  display: block;
-  margin-left: -1ex;
-  padding-left: 1ex;
+  background: rgba(154, 205, 50, 0.4);
+  border-radius: 2px;
 }
 
 [button] {
@@ -60,18 +63,17 @@ tr.Output {
   transition: 200ms;
 }
 
+[button] + [button] {
+  margin-left: 3ex;
+}
+
 [button]:hover {
   background: darkolivegreen;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
-[button] + [button] {
-  background: darkRed;
-  margin-left: 3ex;
-}
-
-[button] + [button]:hover {
-  background: red;
+[contenteditable] {
+  outline: none;
 }
 
 [field] {
@@ -95,6 +97,14 @@ tr.Output {
   font-size: 80%;
 }
 
+[warning] {
+  background: darkRed;
+}
+
+[warning]:hover {
+  background: red;
+}
+
 .button-row {
   margin-top: 3ex;
 }
@@ -103,11 +113,11 @@ tr.Output {
   color: darkRed;
   border-radius: 2ex;
   cursor: pointer;
-  float: right;
   padding: 1px 1ex;
-  position: relative;
+  position: absolute;
+  right: 0;
   text-align: center;
-  top: -1ex;
+  top: 0;
   transition: 200ms;
 }
 
@@ -128,12 +138,48 @@ tr.Output {
   flex: 1 0;
 }
 
+.instance {
+  border-top: 1px solid #555;
+  padding: 1ex;
+  position: relative;
+}
+
+.instance::before {
+  bottom: 0;
+  color: rgba(0, 0, 0, 0.2);
+  counter-increment: processes;
+  content: counter(processes);
+  display: inline-block;
+  font-size: 6ex;
+  font-weight: 900;
+  right: 0;
+  position: absolute;
+  text-align: right;
+}
+
+.instance:first-of-type {
+  border: 0;
+}
+
+.instance + .instance {
+  margin-top: 1ex;
+}
+
+.instance > * {
+  // position: relative;
+  z-index: 1;
+}
+
 .instance .flex-container > *:last-of-type {
   flex-basis: 13ex;
 }
 
 .instance input {
   width: 6ex;
+}
+
+.processes {
+  padding: 0 1ex;
 }
 
 .table.Input + .table.Input label,
