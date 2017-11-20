@@ -1,0 +1,70 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+[button] {
+  background: olive;
+  border-radius: 1ex;
+  color: white;
+  cursor: pointer;
+  font-size: 80%;
+  padding: .5ex 3ex;
+  transition: 200ms;
+}
+
+[button]:hover {
+  background: darkolivegreen;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+[button] + [button] {
+  background: darkRed;
+  margin-left: 3ex;
+}
+
+[button] + [button]:hover {
+  background: red;
+}
+
+[field] {
+  background: gainsboro;
+  flex-basis: 10ex;
+  padding: 3px 1px;
+}
+
+[field]:last-of-type { flex-grow: 0; }
+[field]:first-of-type { flex-grow: 1; }
+
+[field] > * {
+  display: block;
+  width: 100%;
+}
+
+[field] input {
+  border: 0;
+  border-bottom: 1px solid #AFAFAF;
+  font-size: inherit;
+  outline: none;
+  padding: 5px;
+}
+
+[field] label {
+  font-size: 80%;
+}
+
+[flex-container] {
+  display: flex;
+}
+
+[flex-container]:last-of-type {
+  margin-top: 3ex;
+}
+
+.table.Input + .table.Input label,
+.table.Output + .table.Output label {
+  display: none;
+}
