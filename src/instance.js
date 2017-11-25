@@ -40,16 +40,16 @@ function instance(update, remove, item) {
   return (
     <div class="instance">
       <strong>
-        <Editable {...{item, prop: "Recipe", update}}/>
+        <Editable {...{item, prop: "Recipe", update}} />
       </strong>
       <span>&nbsp;</span>
-      (<Editable {...{item, prop: "Time", update}}/>)
+      (<Editable {...{item, prop: "Time", update}} />)
       <span class="dot remove" onClick={remove} title="Remove Process">&times;</span>
       <Row>
         <div>
-          <Editable {...{item, prop: "Machine", update}}/>
+          <Editable {...{item, prop: "Machine", update}} />
           <span>&nbsp;</span>
-          (<Editable {...{item, prop: "Speed", update}}/>)
+          (<Editable {...{item, prop: "Speed", update}} />)
         </div>
         <div><input {...attrs} /> <small>Instances</small></div>
       </Row>

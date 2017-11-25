@@ -1,65 +1,39 @@
 import "./styles.scss"
 
 import Button from "./button"
-import Entry from "./entry"
 import Process from "./process"
 import Row from "./row"
 
 import instance from "./instance"
 
+const copy = _ => JSON.parse(JSON.stringify(_))
 const startingState = {
   instances: []
 }
 
-function App({render, state = startingState}) {
-  function add() {
-    state.pending = {}
-    render(state)
+function App({store, render, state = startingState}) {
+  const addOrEdit = state.pending
+    ? processEntryForm
+    : processAddButton
+
+  function refine([_, indx]) {
+
+    return item => {
+      store.batch(item, state.instances[indx])
+      state.instances[indx] = item
+      render(state)      
+    }
   }
 
-  function refine(indx, item) {
-    state.instances[indx] = item
-    render(state)
+  function remove([_, indx]) {
+
+    return () => {
+      state.instances = state.instances
+        .slice(0, indx)
+        .concat(state.instances.slice(indx + 1))
+      render(state)
+    }
   }
-
-  function remove(indx) {
-    state.instances = state.instances
-      .slice(0, indx)
-      .concat(state.instances.slice(indx + 1))
-    render(state)
-  }
-
-  const addButton = (
-    <Row class="button-row">
-      <span><Button onClick={add}>Add Process</Button></span>
-    </Row>
-  )
-
-  const proc = (
-    <Process
-      {...{
-        cancel() {
-          delete state.pending
-          render(state)
-        },
-        create(pending) {
-          if (validate(pending)) {
-            pending.Instances = 1
-            state.instances.push(pending)
-            delete state.pending
-            render(state)
-          } else {
-            alert("error")
-          }
-        },
-        data: state.pending,
-        update(pending) {
-          state.pending = pending
-          render(state)
-        },
-      }}
-    />
-  )
 
   return (
     <main>
@@ -74,26 +48,68 @@ function App({render, state = startingState}) {
       */}
 
       <div class="processes">
-        {state.instances.map((...args) =>
-          instance(v => refine(args[1], v), () => remove(args[1]), ...args))}
+        {state.instances
+          .map((...args) => instance(refine(args), remove(args), ...copy(args)))}
       </div>
 
-      {state.pending ? proc : addButton}
+      {addOrEdit(store, render, state)}
     </main>
   )
 }
 
-function validate(process) {
-  console.log(process)
+function processAddButton(store, render, state) {
+  function add() {
+    state.pending = {}
+    render(state)
+  }
+
+  return (
+    <Row class="button-row">
+      <span>
+        <Button onClick={add}>Add Process</Button>
+      </span>
+    </Row>
+  )
+}
+
+function processEntryForm(store, render, state) {
+
+  return (
+    <Process
+      {...{
+        cancel() {
+          delete state.pending
+          render(state)
+        },
+        create(pending) {
+          if (processValidator(pending)) {
+            store.batch(pending)
+            pending.Instances = 1
+            state.instances.push(pending)
+            delete state.pending
+            render(state)
+          } else {
+            alert("error")
+          }
+        },
+        data: state.pending,
+        update(pending) {
+          state.pending = pending
+          render(state)
+        }
+      }}
+    />
+  )
+}
+
+function processValidator(process) {
   const recipe = process.Recipe && process.Time
   const machine = process.Machine && process.Speed
-  const items = [process.Outputs, process.Inputs]
-    .every(field =>
-      field && field
-        .every(({Input, Output, Sum}) =>
-          Sum && Input || Output))
+  const items = [...process.Outputs, ...process.Inputs]
+    .every(
+      field => field[field.type] && field.Sum
+    )
 
-  console.log({recipe, machine, items})
   return recipe && machine && items
 }
 
