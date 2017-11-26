@@ -11,7 +11,10 @@ const startingState = {
   instances: []
 }
 
-function App({store, render, state = startingState}) {
+function App({store, render, state}) {
+  state = state || store.get("state") || startingState
+  store.put("state", state)
+
   const addOrEdit = state.pending
     ? processEntryForm
     : processAddButton
