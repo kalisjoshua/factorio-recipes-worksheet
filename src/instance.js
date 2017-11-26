@@ -7,12 +7,20 @@ function Editable({item, prop, update}) {
     update(item)
   }
 
+  function keyPress(event) {
+    if (/enter|escape/i.test(event.code)) {
+      event.preventDefault()
+      event.target.blur()
+    }
+  }
+
   return (
-    <span contenteditable onBlur={change}>{item[prop]}</span>
+    <span contenteditable onBlur={change} onKeydown={keyPress}>{item[prop]}</span>
   )
 }
 
-function instance(update, remove, item) {
+function instance(update, remove, item, indx, list) {
+  // console.log(list)
   const {Inputs, Instances, Outputs, Speed, Time} = item
 
   const attrs = {
