@@ -4,7 +4,7 @@ import Button from "./button"
 import Process from "./process"
 import Row from "./row"
 
-import instance from "./instance"
+import instance, {itemsPerSecond} from "./instance"
 
 const copy = _ => JSON.parse(JSON.stringify(_))
 const startingState = {
@@ -38,6 +38,22 @@ function App({store, render, state}) {
     }
   }
 
+  const totals = state.instances
+    .reduce((acc, inst) => {
+      inst.Outputs
+        .forEach(o => {
+          acc.production[o.Output] =
+            (acc.production[o.Output] || 0) + itemsPerSecond(inst, o)
+        })
+      inst.Inputs
+        .forEach(o => {
+          acc.consumption[o.Input] =
+            (acc.consumption[o.Input] || 0) + itemsPerSecond(inst, o)
+        })
+
+      return acc
+    }, {consumption: {}, production: {}})
+
   return (
     <main>
       <h1>Factorio Recipe Worksheet</h1>
@@ -52,7 +68,7 @@ function App({store, render, state}) {
 
       <div class="processes">
         {state.instances
-          .map((...args) => instance(refine(args), remove(args), ...copy(args)))}
+          .map((...args) => instance(refine(args), remove(args), ...copy(args), totals))}
       </div>
 
       {addOrEdit(store, render, state)}

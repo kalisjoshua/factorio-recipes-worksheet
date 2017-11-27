@@ -19,9 +19,8 @@ function Editable({item, prop, update}) {
   )
 }
 
-function instance(update, remove, item, indx, list) {
-  // console.log(list)
-  const {Inputs, Instances, Outputs, Speed, Time} = item
+function instance(update, remove, item, indx, list, totals) {
+  const {Inputs, Instances = 1, Outputs} = item
 
   const attrs = {
     min: 0,
@@ -30,8 +29,13 @@ function instance(update, remove, item, indx, list) {
       update(item)
     },
     type: "number",
-    value: Instances || 1,
+    value: Instances,
   }
+
+  const lacking = ({ Input }) =>
+    totals.consumption[Input] > totals.production[Input]
+
+  const perSecond = (out) => itemsPerSecond(item, out)
   
   const items = [...Outputs, ...Inputs]
     .map((i, x, o) => (
@@ -39,11 +43,14 @@ function instance(update, remove, item, indx, list) {
         <td>
           <Editable {...{item: o[x], prop: i.type, update: () => update(item)}} />
           <span>&nbsp;</span>
-          (<Editable {...{item: o[x], prop: "Sum", update: () => update(item)}} />)
-            </td>
-        <td>{i.Sum / Time * Speed * (Instances || 1)} / sec</td>
+          (<Editable {...{ item: o[x], prop: "Sum", update: () => update(item) }} />)
+          {lacking(i) && <span class="lacking-production">Lacking Production</span>}
+        </td>
+        <td>{perSecond(i)} / sec</td>
       </tr>
     ))
+  
+  // const production = 
 
   return (
     <div class="instance">
@@ -68,4 +75,10 @@ function instance(update, remove, item, indx, list) {
   )
 }
 
+function itemsPerSecond({Time, Speed, Instances}, {Sum}) {
+
+  return Sum / Time * Speed * Instances
+}
+
 export default instance
+export {itemsPerSecond}

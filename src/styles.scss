@@ -178,6 +178,15 @@ tr.Output {
   width: 6ex;
 }
 
+.lacking-production {
+  background: red;
+  border-radius: 8px;
+  color: white;
+  font-size: 70%;
+  margin-left: 1ex;
+  padding: 4px 10px;
+}
+
 .processes {
   padding: 0 1ex;
 }
