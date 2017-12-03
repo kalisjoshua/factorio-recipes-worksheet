@@ -72,8 +72,8 @@ function App({render, state, store}) {
         )}
       </div>
 
-      <Datalist data={Object.keys(store.get("Machine"))} id="Machine" />
-      <Datalist data={Object.keys(store.get("Recipe"))} id="Recipe" />
+      <Datalist data={Object.keys(store.get("Machine") || {})} id="Machine" />
+      <Datalist data={Object.keys(store.get("Recipe") || {})} id="Recipe" />
 
       {addOrEdit(render, state, store)}
     </main>
