@@ -18,7 +18,7 @@ function Entry(props) {
   return (
     <Field>
       <label for={name}>{label || name}</label>
-      <input {...attrs} novalidate />
+      <input {...attrs} />
     </Field>
   )
 }

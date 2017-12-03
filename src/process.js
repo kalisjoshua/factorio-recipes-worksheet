@@ -47,7 +47,7 @@ function Process({cancel, create, data, update}) {
   }
 
   return (
-    <section>
+    <form novalidate>
       <h2>New Process</h2>
 
       <Row>
@@ -74,7 +74,7 @@ function Process({cancel, create, data, update}) {
           </Button>
         </span>
       </Row>
-    </section>
+    </form>
   )
 }
 
