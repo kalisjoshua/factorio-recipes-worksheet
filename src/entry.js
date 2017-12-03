@@ -1,5 +1,3 @@
-import Field from "./field"
-
 function Entry(props) {
   const {isNumber, label, list, name, onChange, value} = props
 
@@ -23,10 +21,10 @@ function Entry(props) {
   }
 
   return (
-    <Field>
+    <span field>
       <label for={name}>{label || name}</label>
       <input {...attrs} />
-    </Field>
+    </span>
   )
 }
 
