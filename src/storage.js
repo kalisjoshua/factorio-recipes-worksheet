@@ -7,7 +7,8 @@ function factory(version) {
 
   const del = key => localStorage.removeItem(token(key))
   const get = key => JSON.parse(localStorage.getItem(token(key)))
-  const put = (key, val) => localStorage.setItem(token(key), JSON.stringify(val))
+  const put = (key, val) =>
+    localStorage.setItem(token(key), JSON.stringify(val))
 
   const lib = {add, batch, del, get, put}
 
@@ -36,8 +37,14 @@ function factory(version) {
       delete previous.Speed
 
       put("Item", get("Item").filter(i => !Items.includes(i)))
-      put("Machine", (temp => (delete temp[Machine], temp))(get("Machine") || {}))
-      put("Recipe", (temp => (delete temp[previous.Recipe], temp))(get("Recipe") || {}))
+      put(
+        "Machine",
+        (temp => (delete temp[Machine], temp))(get("Machine") || {})
+      )
+      put(
+        "Recipe",
+        (temp => (delete temp[previous.Recipe], temp))(get("Recipe") || {})
+      )
     }
 
     const Recipe = copy(current)

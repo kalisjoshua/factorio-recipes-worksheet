@@ -26,7 +26,14 @@ function lineItem(update, {Input, Output, Sum, type}, indx, orig) {
 }
 
 function Process({cancel, create, data, update}) {
-  const {Inputs = [], Machine = "", Outputs = [], Recipe = "", Speed = 0, Time = 0} = data
+  const {
+    Inputs = [],
+    Machine = "",
+    Outputs = [],
+    Recipe = "",
+    Speed = 0,
+    Time = 0
+  } = data
 
   function done() {
     data.Inputs = Inputs.filter(i => i[i.type])
@@ -51,20 +58,44 @@ function Process({cancel, create, data, update}) {
       <h2>New Process</h2>
 
       <Row>
-        <Entry list="Recipe" name="Recipe" onChange={propsUpdate("Recipe")} value={Recipe} />
+        <Entry
+          list="Recipe"
+          name="Recipe"
+          onChange={propsUpdate("Recipe")}
+          value={Recipe}
+        />
 
-        <Entry isNumber name="Time" onChange={propsUpdate("Time")} value={Time} />
+        <Entry
+          isNumber
+          name="Time"
+          onChange={propsUpdate("Time")}
+          value={Time}
+        />
       </Row>
 
       <Row>
-        <Entry list="Machine" name="Machine" onChange={propsUpdate("Machine")} value={Machine} />
+        <Entry
+          list="Machine"
+          name="Machine"
+          onChange={propsUpdate("Machine")}
+          value={Machine}
+        />
 
-        <Entry isNumber name="Speed" onChange={propsUpdate("Speed")} value={Speed} />
+        <Entry
+          isNumber
+          name="Speed"
+          onChange={propsUpdate("Speed")}
+          value={Speed}
+        />
       </Row>
 
-      {entryRow("Output", Outputs).map((...args) => lineItem(propsUpdate("Outputs"), ...args))}
+      {entryRow("Output", Outputs).map((...args) =>
+        lineItem(propsUpdate("Outputs"), ...args)
+      )}
 
-      {entryRow("Input", Inputs).map((...args) => lineItem(propsUpdate("Inputs"), ...args))}
+      {entryRow("Input", Inputs).map((...args) =>
+        lineItem(propsUpdate("Inputs"), ...args)
+      )}
 
       <Row class="button-row">
         <span>

@@ -3,7 +3,10 @@ import Field from "./field"
 function Entry(props) {
   const {isNumber, label, list, name, onChange, value} = props
 
-  const data = Object.keys(props).reduce((acc, key) => (/^data-/.test(key) && (acc[key] = props[key]), acc), {})
+  const data = Object.keys(props).reduce(
+    (acc, key) => (/^data-/.test(key) && (acc[key] = props[key]), acc),
+    {}
+  )
 
   const attrs = {
     ...data,

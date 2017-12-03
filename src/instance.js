@@ -34,13 +34,6 @@ function instance(update, remove, item, indx, list, totals) {
     value: Instances
   }
 
-  // const lacking = ({Input}) => {
-  //   const total = (totals.production[Input] || 0) / (totals.consumption[Input] || 1) * 100
-
-  //   console.log(`${total}`.match(/(\d+(?:\.\d)?)/)[1])
-  //   return `${total}` + `${total}`.match(/(\d+(?:\.\d)?)/)
-  // }
-
   const perSecond = out => itemsPerSecond(item, out)
 
   const items = [...Outputs, ...Inputs].map((i, x, o) => (
@@ -48,9 +41,13 @@ function instance(update, remove, item, indx, list, totals) {
       <td>
         <Editable {...{item: o[x], prop: i.type, update: () => update(item)}} />
         <span>&nbsp;</span>
-        (<Editable {...{item: o[x], prop: "Sum", update: () => update(item)}} />)
-        <Production input={totals.consumption[i.Input]} output={totals.production[i.Input]} />
-        {/*lacking(i) < 100 && <span class="lacking-production">Satisfaction {lacking(i)}%</span>*/}
+        (<Editable
+          {...{item: o[x], prop: "Sum", update: () => update(item)}}
+        />)
+        <Production
+          input={totals.consumption[i.Input]}
+          output={totals.production[i.Input]}
+        />
       </td>
       <td>{perSecond(i)} / sec</td>
     </tr>
@@ -89,7 +86,9 @@ function itemsPerSecond({Time, Speed, Instances}, {Sum}) {
 }
 
 function Production({input, output}) {
-  const overunder = `production-${input < output ? "over" : input > output ? "under" : ""}`
+  const overunder = `production-${input < output
+    ? "over"
+    : input > output ? "under" : ""}`
   const total = (output || 0) / (input || 1) * 100
   const display = (`${total}`.match(/(\d+(?:\.\d)?)/) || []).shift()
 
