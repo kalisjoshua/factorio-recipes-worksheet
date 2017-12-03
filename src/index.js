@@ -8,7 +8,7 @@ const root = document.getElementById("root")
 
 if (root && typeof window !== "undefined") {
   function render(state) {
-    preactRender(<App {...{ store, render, state }} />, root, root.lastChild)
+    preactRender(<App {...{store, render, state}} />, root, root.lastChild)
   }
 
   render()

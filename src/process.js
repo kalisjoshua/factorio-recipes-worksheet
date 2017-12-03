@@ -1,6 +1,5 @@
 import Button from "./button"
 import Entry from "./entry"
-import Field from "./field"
 import Row from "./row"
 
 function lineItem(update, {Input, Output, Sum, type}, indx, orig) {
@@ -27,30 +26,17 @@ function lineItem(update, {Input, Output, Sum, type}, indx, orig) {
 }
 
 function Process({cancel, create, data, update}) {
-  const {
-    Inputs = [],
-    Machine = "",
-    Outputs = [],
-    Recipe = "",
-    Speed = 0,
-    Time = 0,
-  } = data
+  const {Inputs = [], Machine = "", Outputs = [], Recipe = "", Speed = 0, Time = 0} = data
 
   function done() {
-    data.Inputs = Inputs
-      .filter(i => i[i.type])
-    data.Outputs = Outputs
-      .filter(i => i[i.type])
+    data.Inputs = Inputs.filter(i => i[i.type])
+    data.Outputs = Outputs.filter(i => i[i.type])
 
     create(data)
   }
 
   function entryRow(type, list, addRow) {
-
-    return [
-      ...list.filter(item => item[type]),
-      {[type]: "", Sum: 1, type}
-    ]
+    return [...list.filter(item => item[type]), {[type]: "", Sum: 1, type}]
   }
 
   function propsUpdate(prop) {
@@ -76,16 +62,16 @@ function Process({cancel, create, data, update}) {
         <Entry isNumber name="Speed" onChange={propsUpdate("Speed")} value={Speed} />
       </Row>
 
-      {entryRow("Output", Outputs)
-        .map((...args) => lineItem(propsUpdate("Outputs"), ...args))}
+      {entryRow("Output", Outputs).map((...args) => lineItem(propsUpdate("Outputs"), ...args))}
 
-      {entryRow("Input", Inputs)
-        .map((...args) => lineItem(propsUpdate("Inputs"), ...args))}
+      {entryRow("Input", Inputs).map((...args) => lineItem(propsUpdate("Inputs"), ...args))}
 
       <Row class="button-row">
         <span>
           <Button onClick={done}>Done</Button>
-          <Button onClick={cancel} warning>Cancel</Button>
+          <Button onClick={cancel} warning>
+            Cancel
+          </Button>
         </span>
       </Row>
     </section>

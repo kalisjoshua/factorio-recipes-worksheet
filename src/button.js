@@ -4,7 +4,9 @@ function Button(props) {
   delete props.children
 
   return (
-    <span button {...props}>{children}</span>
+    <span button {...props}>
+      {children}
+    </span>
   )
 }
 

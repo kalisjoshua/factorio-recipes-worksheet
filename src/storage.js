@@ -1,27 +1,24 @@
 const copy = _ => JSON.parse(JSON.stringify(_))
-const typeOf = Function.call.bind(({}).toString)
+const typeOf = Function.call.bind({}.toString)
 
 function factory(version) {
   const cache = {}
   const token = key => `${version}-${key}`
 
-  const del = key =>
-    localStorage.removeItem(token(key))
-  const get = key =>
-    JSON.parse(localStorage.getItem(token(key)))
-  const put = (key, val) =>
-    localStorage.setItem(token(key), JSON.stringify(val))
+  const del = key => localStorage.removeItem(token(key))
+  const get = key => JSON.parse(localStorage.getItem(token(key)))
+  const put = (key, val) => localStorage.setItem(token(key), JSON.stringify(val))
 
-  const lib = { add, batch, del, get, put }
+  const lib = {add, batch, del, get, put}
 
   function add(key, val) {
     switch (typeOf(val)) {
       case "[object Array]":
-        put(key, [...(new Set([...(get(key) || []), ...val]).values())])
+        put(key, [...new Set([...(get(key) || []), ...val]).values()])
         break
 
       case "[object Object]":
-        put(key, (temp => (temp[val[key]] = val, temp))(get(key) || {}))
+        put(key, (temp => ((temp[val[key]] = val), temp))(get(key) || {}))
         break
 
       default:
@@ -33,7 +30,7 @@ function factory(version) {
   function batch(current, previous) {
     if (previous) {
       const Items = items(previous)
-      const { Machine, Speed } = previous
+      const {Machine, Speed} = previous
 
       delete previous.Machine
       delete previous.Speed
@@ -44,20 +41,18 @@ function factory(version) {
     }
 
     const Recipe = copy(current)
-    const { Machine, Speed } = Recipe
+    const {Machine, Speed} = Recipe
 
     delete Recipe.Machine
     delete Recipe.Speed
 
     add("Item", items(Recipe))
-    add("Machine", { Machine, Speed })
+    add("Machine", {Machine, Speed})
     add("Recipe", Recipe)
   }
 
-  function items({ Inputs, Outputs }) {
-
-    return [...Inputs, ...Outputs]
-      .map(item => item[item.type])
+  function items({Inputs, Outputs}) {
+    return [...Inputs, ...Outputs].map(item => item[item.type])
   }
 
   return lib
