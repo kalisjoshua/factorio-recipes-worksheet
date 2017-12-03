@@ -1,7 +1,8 @@
 import "./styles.scss"
 
 import Button from "./button"
-import Datalist from "./Datalist"
+import Complication from "./complication"
+import Datalist from "./datalist"
 import Process from "./process"
 import Row from "./row"
 import Summary from "./summary"
@@ -54,17 +55,23 @@ function App({render, state, store}) {
 
   return (
     <main>
-      <h1>Factorio Recipe Worksheet</h1>
+      {!state.instances.length ? (
+        <h1>Factorio Recipe Worksheet</h1>
+      ) : (
+        <noscript />
+      )}
+
+      {state.instances.length ? (
+        <Complication {...{render, state, store}} />
+      ) : (
+        <noscript />
+      )}
 
       {/*
-      <Row>
-        <Entry name="Map Settings" />
-      </Row>
-
       <small>Store settings for a multiple map settings is localStorage.</small>
       */}
 
-      <Summary totals={totals} />
+      {state.instances.length ? <Summary totals={totals} /> : <noscript />}
 
       <div class="processes">
         {state.instances.map((...args) =>
