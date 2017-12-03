@@ -10,13 +10,22 @@ import Summary from "./summary"
 import instance, {itemsPerSecond} from "./instance"
 
 const copy = _ => JSON.parse(JSON.stringify(_))
-const startingState = {
-  instances: []
-}
 
 function App({render, state, store}) {
-  state = state || store.get("state") || startingState
+  state = state || store.get("state") || {}
+
+  if (!state.instances) {
+    state.instances = []
+  }
+
   store.put("state", state)
+
+  if (state.Complication) {
+    const allComplications = store.get("Complication") || {}
+
+    allComplications[state.Complication || ""] = state.instances
+    store.put("Complication", allComplications)
+  }
 
   const addOrEdit = state.pending ? processEntryForm : processAddButton
 
@@ -55,17 +64,11 @@ function App({render, state, store}) {
 
   return (
     <main>
-      {!state.instances.length ? (
-        <h1>Factorio Recipe Worksheet</h1>
-      ) : (
-        <noscript />
-      )}
+      <h1>
+        {state.Complication ? state.Complication : "Factorio Recipe Worksheet"}
+      </h1>
 
-      {state.instances.length ? (
-        <Complication {...{render, state, store}} />
-      ) : (
-        <noscript />
-      )}
+      <Complication {...{render, state, store}} />
 
       {/*
       <small>Store settings for a multiple map settings is localStorage.</small>
@@ -79,6 +82,7 @@ function App({render, state, store}) {
         )}
       </div>
 
+      <Datalist data={store.get("Item") || []} id="Item" />
       <Datalist data={Object.keys(store.get("Machine") || {})} id="Machine" />
       <Datalist data={Object.keys(store.get("Recipe") || {})} id="Recipe" />
 
@@ -95,9 +99,9 @@ function processAddButton(render, state, store) {
 
   return (
     <Row class="button-row">
-      <span>
-        <Button onClick={add}>Add Process</Button>
-      </span>
+      <Button onClick={add} tabindex="2">
+        Add Process
+      </Button>
     </Row>
   )
 }
@@ -116,21 +120,23 @@ function processEntryForm(render, state, store) {
         delete state.pending
         render(state)
       } else {
-        alert("error")
+        alert(
+          "You need to fill out some more fields. Josh should write better error handling."
+        )
       }
     },
     data: copy(state.pending),
     update(pending) {
       if (state.pending.Machine !== pending.Machine) {
-        const found = store.get("Machine")[pending.Machine]
+        const found = store.get("Machine")
 
-        pending = found ? {...pending, ...found} : pending
+        pending = found ? {...pending, ...found[pending.Machine]} : pending
       }
 
       if (state.pending.Recipe !== pending.Recipe) {
-        const found = store.get("Recipe")[pending.Recipe]
+        const found = store.get("Recipe")
 
-        pending = found ? {...pending, ...found} : pending
+        pending = found ? {...pending, ...found[pending.Recipe]} : pending
       }
 
       state.pending = pending

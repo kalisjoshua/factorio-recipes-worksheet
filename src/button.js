@@ -3,11 +3,7 @@ function Button(props) {
 
   delete props.children
 
-  return (
-    <span button {...props}>
-      {children}
-    </span>
-  )
+  return <button {...props}>{children}</button>
 }
 
 export default Button

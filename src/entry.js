@@ -1,17 +1,22 @@
 function Entry(props) {
-  const {isNumber, label, list, name, onChange, value} = props
+  const {isNumber, label, list, name, value} = props
 
   const data = Object.keys(props).reduce(
     (acc, key) => (/^data-/.test(key) && (acc[key] = props[key]), acc),
     {}
   )
 
+  const change = event => props.onChange(event.target.value)
+
   const attrs = {
     ...data,
     id: name,
     list,
     name,
-    onChange: event => onChange(event.target.value),
+    onBlur: change,
+    onChange: change,
+    onInput: props.onInput || (() => {}),
+    tabindex: props.tabindex || 0,
     value
   }
 

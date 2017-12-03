@@ -19,7 +19,7 @@ function lineItem(update, {Input, Output, Sum, type}, indx, orig) {
 
   return (
     <Row class={`table ${type}`}>
-      <Entry {...item} />
+      <Entry {...item} list="Item" />
       <Entry {...count} isNumber />
     </Row>
   )
