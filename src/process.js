@@ -51,13 +51,13 @@ function Process({cancel, create, data, update}) {
       <h2>New Process</h2>
 
       <Row>
-        <Entry name="Recipe" onChange={propsUpdate("Recipe")} value={Recipe} />
+        <Entry list="Recipe" name="Recipe" onChange={propsUpdate("Recipe")} value={Recipe} />
 
         <Entry isNumber name="Time" onChange={propsUpdate("Time")} value={Time} />
       </Row>
 
       <Row>
-        <Entry name="Machine" onChange={propsUpdate("Machine")} value={Machine} />
+        <Entry list="Machine" name="Machine" onChange={propsUpdate("Machine")} value={Machine} />
 
         <Entry isNumber name="Speed" onChange={propsUpdate("Speed")} value={Speed} />
       </Row>

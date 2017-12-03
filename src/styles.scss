@@ -182,17 +182,25 @@ tr.Output {
   width: 6ex;
 }
 
-.lacking-production {
-  background: red;
-  border-radius: 8px;
-  color: white;
-  font-size: 70%;
-  margin-left: 1ex;
-  padding: 4px 10px;
-}
-
 .processes {
   padding: 0 1ex;
+}
+
+[class*="production-"] {
+  border-radius: 8px;
+  display: none;
+  float: right;
+  font-size: 85%;
+  margin-left: 1ex;
+  padding: 0 10px;
+}
+.production-over {
+  color: teal;
+  display: inline;
+}
+.production-under {
+  color: darkred;
+  display: inline;
 }
 
 .summary {

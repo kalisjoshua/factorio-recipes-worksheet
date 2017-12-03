@@ -37,7 +37,6 @@ function calculate({consumption, production}) {
 }
 
 function Display({data, children}) {
-  console.log(arguments)
   return (
     <dl class={`${children}`.toLowerCase()}>
       <dt>{children}</dt>
