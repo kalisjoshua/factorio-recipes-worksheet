@@ -27,9 +27,9 @@ function App({render, state, store}) {
 
   function remove([_, indx]) {
     return () => {
-      current.Process = current.Process
-        .slice(0, indx)
-        .concat(current.Process.slice(indx + 1))
+      current.Process = current.Process.slice(0, indx).concat(
+        current.Process.slice(indx + 1)
+      )
       render(state)
     }
   }

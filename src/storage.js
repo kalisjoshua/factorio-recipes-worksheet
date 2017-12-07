@@ -2,7 +2,6 @@ const copy = _ => JSON.parse(JSON.stringify(_))
 const typeOf = Function.call.bind({}.toString)
 
 function factory(version) {
-  const cache = {}
   const token = key => `${version}-${key}`
 
   const del = key => localStorage.removeItem(token(key))
@@ -24,14 +23,12 @@ function factory(version) {
 
       default:
         throw new Error(`Unexpected value type: ${typeOf(val)}.`)
-        break
     }
   }
 
   function batch(current, previous) {
     if (previous) {
       const Items = items(previous)
-      const {Machine, Speed} = previous
 
       delete previous.Machine
       delete previous.Speed
@@ -39,7 +36,7 @@ function factory(version) {
       put("Item", get("Item").filter(i => !Items.includes(i)))
       put(
         "Machine",
-        (temp => (delete temp[Machine], temp))(get("Machine") || {})
+        (temp => (delete temp[previous.Machine], temp))(get("Machine") || {})
       )
       put(
         "Recipe",

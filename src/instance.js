@@ -1,5 +1,4 @@
 import Editable from "./editable"
-import Entry from "./entry"
 import Row from "./row"
 
 const template = ({attrs, items, item, remove, update}) => (
@@ -69,9 +68,9 @@ function itemsPerSecond({Time, Speed, Instances}, {Sum}) {
 }
 
 function Production({input, output}) {
-  const overunder = `production-${input < output
-    ? "over"
-    : input > output ? "under" : ""}`
+  const overunder = `production-${
+    input < output ? "over" : input > output ? "under" : ""
+  }`
   const total = (output || 0) / (input || 1) * 100
   const display = (`${total}`.match(/(\d+(?:\.\d)?)/) || []).shift()
 

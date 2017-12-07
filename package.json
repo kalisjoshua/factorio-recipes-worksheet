@@ -8,7 +8,9 @@
   },
   "devDependencies": {
     "eslint": "^4.5.0",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-config-synacor": "^1.1.0",
+    "eslint-plugin-prettier": "^2.3.1",
     "if-env": "^1.0.0",
     "lint-staged": "^5.0.0",
     "node-sass": "^4.5.3",
@@ -20,11 +22,12 @@
     "*.{js,json,css}": ["prettier --write", "git add"]
   },
   "scripts": {
-    "test": "eslint . && preact test",
-    "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
     "build": "preact build",
+    "dev": "preact watch",
+    "lint": "eslint .",
     "serve": "preact build && preact serve",
-    "dev": "preact watch"
+    "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
+    "test": "eslint . && preact test"
   },
   "eslintConfig": {
     "extends": "eslint-config-synacor"
