@@ -1,47 +1,85 @@
 import Datalist from "./datalist"
+import Editable from "./editable"
 import Entry from "./entry"
 import Row from "./row"
 
 const name = "Complication"
 
 function Complication({render, state, store}) {
-  const editing = {
-    list: name,
-    name,
-    onChange: change,
-    value: state[name]
-  }
+  function add() {
+    const found = state
+      ? state.filter(item => item[name] === `New ${name}`)[0]
+      : void 0
 
-  const jump = {
-    list: name,
-    name: "Jump",
-    onChange() {},
-    onInput(event) {
-      change(event.target.value)
-    },
-    value: ""
-  }
+    if (!found) {
+      state.unshift({
+        Complication: `New ${name}`,
+        Process: []
+      })
 
-  function change(value) {
-    state[name] = value
-
-    const found = store.get(name)
-
-    if (found && found[value]) {
-      state.instances = found[value]
-    } else {
-      state.instances = []
+      render(state)
     }
+  }
 
-    render(state)
+  function choose(key) {
+    return () => {
+      render([
+        ...state.slice(key, key + 1),
+        ...state.slice(0, key),
+        ...state.slice(key + 1)
+      ])
+    }
+  }
+
+  function remove(key) {
+    return () => {
+      state = state.filter(item => item[name] !== key)
+
+      render(state)
+    }
+  }
+
+  function rename(key) {
+    return ({Complication: newName}) => {
+      state[0][name] = newName
+
+      render(state)
+    }
   }
 
   return (
-    <Row>
-      <Datalist data={Object.keys(store.get(name) || {})} id={name} />
-      <Entry {...editing} tabindex="1" />
-      <Entry {...jump} tabindex="-1" />
-    </Row>
+    <nav class={`${name.toLowerCase()}-tabs`}>
+      <ul>
+        <li class="clickable" onClick={add} title={`Add a new ${name}`}>
+          {!state.length ? `New ${name}` : "+"}
+        </li>
+        {state.map(({Complication}, indx) => (
+          <Tab
+            choose={choose(indx)}
+            data={store.get(name)}
+            isActive={!indx}
+            label={Complication}
+            remove={remove(Complication)}
+            rename={rename(Complication)}
+          />
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+function Tab({choose, data, isActive, label, remove, rename}) {
+  return (
+    <li class={`clickable ${isActive ? "isActive" : ""}`} onClick={choose}>
+      {isActive ? (
+        <Editable item={{...data, [name]: label}} prop={name} update={rename} />
+      ) : (
+        label
+      )}
+      <span class="clickable remove" onClick={remove}>
+        &times;
+      </span>
+    </li>
   )
 }
 

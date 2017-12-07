@@ -1,25 +1,30 @@
+import Editable from "./editable"
 import Entry from "./entry"
 import Row from "./row"
 
-function Editable({item, prop, update}) {
-  function change(event) {
-    item[prop] = event.target.innerText
-    update(item)
-  }
-
-  function keyPress(event) {
-    if (/enter|escape/i.test(event.code)) {
-      event.preventDefault()
-      event.target.blur()
-    }
-  }
-
-  return (
-    <span contenteditable onBlur={change} onKeydown={keyPress}>
-      {item[prop]}
+const template = ({attrs, items, item, remove, update}) => (
+  <div class="instance">
+    <strong>
+      <Editable {...{item, prop: "Recipe", update}} />
+    </strong>
+    <span>&nbsp;</span>
+    (<Editable {...{item, prop: "Time", update}} />)
+    <span class="dot remove" onClick={remove} title="Remove Process">
+      &times;
     </span>
-  )
-}
+    <Row>
+      <div>
+        <Editable {...{item, prop: "Machine", update}} />
+        <span>&nbsp;</span>
+        (<Editable {...{item, prop: "Speed", update}} />)
+      </div>
+      <div>
+        <input {...attrs} /> <small>Instances</small>
+      </div>
+    </Row>
+    <table>{items}</table>
+  </div>
+)
 
 function instance(update, remove, item, indx, list, totals) {
   const {Inputs, Instances = 1, Outputs} = item
@@ -53,29 +58,7 @@ function instance(update, remove, item, indx, list, totals) {
     </tr>
   ))
 
-  return (
-    <div class="instance">
-      <strong>
-        <Editable {...{item, prop: "Recipe", update}} />
-      </strong>
-      <span>&nbsp;</span>
-      (<Editable {...{item, prop: "Time", update}} />)
-      <span class="dot remove" onClick={remove} title="Remove Process">
-        &times;
-      </span>
-      <Row>
-        <div>
-          <Editable {...{item, prop: "Machine", update}} />
-          <span>&nbsp;</span>
-          (<Editable {...{item, prop: "Speed", update}} />)
-        </div>
-        <div>
-          <input {...attrs} /> <small>Instances</small>
-        </div>
-      </Row>
-      <table>{items}</table>
-    </div>
-  )
+  return template({attrs, items, item, remove, update})
 }
 
 function itemsPerSecond({Time, Speed, Instances}, {Sum}) {

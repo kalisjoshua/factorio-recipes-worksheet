@@ -1,7 +1,7 @@
 {
   "name": "factorio-recipe-worksheet",
   "description": null,
-  "version": "0.0.293",
+  "version": "0.1.0",
   "dependencies": {
     "preact-compat": "3.17.0",
     "preact": "8.2.5"

@@ -29,7 +29,8 @@ input {
   padding: 5px;
 }
 
-ol, ul {
+ol,
+ul {
   margin: 2ex;
   // margin-right: 0;
   // padding: 0;
@@ -63,7 +64,7 @@ button {
   color: white;
   cursor: pointer;
   font-size: 80%;
-  padding: .5ex 3ex;
+  padding: 0.5ex 3ex;
   transition: 200ms;
 }
 
@@ -93,7 +94,7 @@ button:hover {
 
 [field] input {
   background: white;
-  border-bottom: 1px solid #AFAFAF;
+  border-bottom: 1px solid #afafaf;
   font-size: inherit;
 }
 
@@ -111,6 +112,64 @@ button:hover {
 
 .button-row {
   margin-top: 3ex;
+}
+
+.clickable {
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.complication-tabs {
+  display: inline-block;
+  max-width: 100%;
+  overflow: scroll;
+  white-space: nowrap;
+}
+
+.complication-tabs ul {
+  border: 1px solid #999;
+  border-bottom: 0;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+.complication-tabs li {
+  border: 1px solid #999;
+  display: inline-block;
+  padding: 1ex;
+  position: relative;
+}
+
+.complication-tabs li + li {
+  padding: 1ex 3ex;
+}
+
+.complication-tabs li.isActive {
+  border-bottom: 0;
+}
+
+.complication-tabs .remove {
+  color: transparent;
+  padding: 0 1ex;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 300ms;
+}
+
+.complication-tabs li:hover .remove {
+  color: darkred;
+}
+
+.complication-tabs:hover .remove:hover {
+  background: darkred;
+  color: white;
 }
 
 .dot {
@@ -209,8 +268,7 @@ button:hover {
   display: grid;
   grid-template-columns: auto auto auto;
   grid-template-rows: auto;
-  grid-template-areas: 
-    "input surplus output";
+  grid-template-areas: "input surplus output";
   margin: 2ex 0;
   padding: 1ex;
 }
