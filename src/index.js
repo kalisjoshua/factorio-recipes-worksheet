@@ -4,10 +4,14 @@ import App from "./app"
 import newStore from "./storage"
 
 const store = newStore("2017-11-20")
-const root = document.getElementById("root")
+let root
 
 function render(state) {
   preactRender(<App {...{store, render, state}} />, root, root.lastChild)
 }
 
-root && typeof window !== "undefined" && render()
+if (typeof window !== "undefined") {
+  root = document.createElement("DIV")
+  document.body.appendChild(root)
+  render()
+}
