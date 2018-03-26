@@ -1,5 +1,7 @@
 import {render as preactRender} from "preact"
 
+import App from "./app"
+
 import newStore from "./storage"
 
 const store = newStore("2017-11-20")

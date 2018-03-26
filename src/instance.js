@@ -1,30 +1,6 @@
 import Editable from "./editable"
 import Row from "./row"
 
-const template = ({attrs, items, item, remove, update}) => (
-  <div class="instance">
-    <strong>
-      <Editable {...{item, prop: "Recipe", update}} />
-    </strong>
-    <span>&nbsp;</span>
-    (<Editable {...{item, prop: "Time", update}} />)
-    <span class="dot remove" onClick={remove} title="Remove Process">
-      &times;
-    </span>
-    <Row>
-      <div>
-        <Editable {...{item, prop: "Machine", update}} />
-        <span>&nbsp;</span>
-        (<Editable {...{item, prop: "Speed", update}} />)
-      </div>
-      <div>
-        <input {...attrs} /> <small>Instances</small>
-      </div>
-    </Row>
-    <table>{items}</table>
-  </div>
-)
-
 function instance(update, remove, item, indx, list, totals) {
   const {Inputs, Instances = 1, Outputs} = item
 
@@ -38,7 +14,12 @@ function instance(update, remove, item, indx, list, totals) {
     value: Instances
   }
 
-  const perSecond = out => itemsPerSecond(item, out)
+  const throughput = Inputs.reduce((acc, {Input}) => {
+    return Math.min(
+      totals.production[Input] / totals.consumption[Input] || 2,
+      acc
+    )
+  }, 1)
 
   const items = [...Outputs, ...Inputs].map((i, x, o) => (
     <tr class={`flex-container ${i.type}`}>
@@ -49,22 +30,43 @@ function instance(update, remove, item, indx, list, totals) {
           {...{item: o[x], prop: "Sum", update: () => update(item)}}
         />)
         <Production
-          input={totals.consumption[i.Input]}
-          output={totals.production[i.Input]}
+          input={totals.consumption[i[i.type]]}
+          output={totals.production[i[i.type]]}
         />
       </td>
-      <td>{perSecond(i)} / sec</td>
+      <td>{itemsPerSecond(item, i, throughput)} / sec</td>
     </tr>
   ))
 
-  return template({attrs, items, item, remove, update})
+  return (
+    <div class="instance">
+      <strong>
+        <Editable {...{item, prop: "Recipe", update}} />
+      </strong>
+      <span>&nbsp;</span>
+      (<Editable {...{item, prop: "Time", update}} />)
+      <span class="dot remove" onClick={remove} title="Remove Process">
+        &times;
+      </span>
+      <Row>
+        <div>
+          <Editable {...{item, prop: "Machine", update}} />
+          <span>&nbsp;</span>
+          (<Editable {...{item, prop: "Speed", update}} />)
+        </div>
+        <div>
+          <input {...attrs} /> <small>Instances</small>
+        </div>
+      </Row>
+      <table>{items}</table>
+    </div>
+  )
 }
 
-function itemsPerSecond({Time, Speed, Instances}, {Sum}) {
-  const scale = 1000
-  const temp = Sum / Time * Speed * Instances
-
-  return ~~(temp * scale) / scale
+function itemsPerSecond({Instances, Speed, Time}, {Sum}, throughput = 1) {
+  return +`${Sum / Time * Speed * Instances * throughput}`.match(
+    /(\d+(?:\.\d{0,2})?)/
+  )[1]
 }
 
 function Production({input, output}) {
@@ -74,7 +76,7 @@ function Production({input, output}) {
   const total = (output || 0) / (input || 1) * 100
   const display = (`${total}`.match(/(\d+(?:\.\d)?)/) || []).shift()
 
-  return <span class={overunder}>Supply {display} %</span>
+  return <span class={overunder}>{display} %</span>
 }
 
 export default instance

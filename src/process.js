@@ -54,7 +54,7 @@ function Process({cancel, create, data, update}) {
   }
 
   return (
-    <form novalidate>
+    <form novalidate onSubmit={event => (event.preventDefault(), false)}>
       <h2>New Process</h2>
 
       <Row>

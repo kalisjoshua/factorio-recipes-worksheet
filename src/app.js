@@ -49,11 +49,7 @@ function App({render, state, store}) {
 
       {/*<small>Store settings for a multiple map settings.</small>*/}
 
-      {current && current.Process.length ? (
-        <Summary totals={totals} />
-      ) : (
-        <noscript />
-      )}
+      {(current && current.Process.length && <Summary totals={totals} />) || ""}
 
       <div class="processes">
         {current &&
@@ -76,7 +72,7 @@ function App({render, state, store}) {
   )
 }
 
-function processAddButton(render, state, store) {
+function processAddButton(render, state) {
   function add() {
     state[0].pending = {}
     render(state)

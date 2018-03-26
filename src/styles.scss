@@ -6,7 +6,7 @@ body {
   counter-reset: processes;
   font-family: sans-serif;
   margin: 0 auto;
-  max-width: 80ex;
+  max-width: 120ex;
   padding: 1ex;
 }
 
@@ -238,7 +238,7 @@ button:hover {
 }
 
 .instance input {
-  width: 6ex;
+  width: 7ex;
 }
 
 .processes {

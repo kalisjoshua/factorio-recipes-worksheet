@@ -41,8 +41,11 @@ function Display({data, children}) {
     <dl class={`${children}`.toLowerCase()}>
       <dt>{children}</dt>
       {data.map(item => (
-        <dd>
-          {item[item.type]} ({item.sum} / sec)
+        <dd class="flex-container">
+          <span>{item[item.type]}</span>{" "}
+          <span style="text-align: right; white-space: nowrap;">
+            ({~~(item.sum * 100) / 100} / sec)
+          </span>
         </dd>
       ))}
     </dl>
